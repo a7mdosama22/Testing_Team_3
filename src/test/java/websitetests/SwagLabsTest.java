@@ -1,5 +1,6 @@
 package websitetests;
-
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import handlers.ElementWaits;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -21,15 +22,15 @@ public class SwagLabsTest extends BaseTest {
         loginPage = new LoginPage(driver);
     }
 
-    @Test
-    public void testCompleteCheckoutFlow() {
+    @Test(dataProvider = "loginData")
+    public void testCompleteCheckoutFlow(String username, String password) {
 
         if (waits.waitforElementVisiablity(driver, loginPage.usernameField)) {
-            loginPage.enterUsername("standard_user");
+            loginPage.enterUsername(username);
         }
 
         if (waits.waitforElementVisiablity(driver, loginPage.passwordField)) {
-            loginPage.enterPassword("secret_sauce");
+            loginPage.enterPassword(password);
         }
 
         if (waits.waitforElementVisiablity(driver, loginPage.loginButton)) {
@@ -60,4 +61,14 @@ public class SwagLabsTest extends BaseTest {
         captureScreenshot(driver,filePath );
         super.tearDown();
     }
+    @DataProvider(name = "loginData")
+    public Object[][] LoginDataProvider (){
+
+        return new Object[][] {
+                {"standard_user", "secret_sauce"},
+                {"problem_user", "secret_sauce"},
+                {"performance_glitch_user","secret_sauce"}
+        };
+    }
+
 }

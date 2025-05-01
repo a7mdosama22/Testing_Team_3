@@ -16,18 +16,18 @@ public class AddItemsToCartTest extends BaseTest{
         super.setUp();
         loginPage = new LoginPage(driver);
     }
-    @Test
-    public void addItems (){
+    @Test(dataProvider = "loginData")
+    public void addItems (String username, String password){
         // Login
         if (waits.waitforElementVisiablity(driver,loginPage.usernameField))
         {
-            loginPage.enterUsername("standard_user");
+            loginPage.enterUsername(username);
         }
 
 
         if (waits.waitforElementVisiablity(driver,loginPage.passwordField))
         {
-            loginPage.enterPassword("secret_sauce");
+            loginPage.enterPassword(password);
         }
 
 
@@ -63,5 +63,14 @@ public class AddItemsToCartTest extends BaseTest{
         String filePath = "C:\\Users\\ms\\Desktop\\Programing\\DEPIR2-POM\\src\\test\\resources\\screenshot2.png" ;
         captureScreenshot(driver,filePath );
         super.tearDown();
+    }
+    @DataProvider(name = "loginData")
+    public Object[][] LoginDataProvider () {
+
+        return new Object[][]{
+                {"standard_user", "secret_sauce"},
+                {"problem_user", "secret_sauce"},
+                {"performance_glitch_user", "secret_sauce"}
+        };
     }
 }
