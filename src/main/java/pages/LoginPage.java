@@ -7,10 +7,10 @@ public class LoginPage {
     WebDriver driver;
 
     // Locators
-    By usernameField = By.id("user-name");
-    By passwordField = By.id("password");
-    By loginButton = By.id("login-button");
-    By loginErrorMessage = By.cssSelector("h3[data-test='error']");
+    public By usernameField = By.id("user-name");
+    public By passwordField = By.id("password");
+    public By loginButton = By.id("login-button");
+    public By loginErrorMessage = By.cssSelector("h3[data-test='error']");
 
     // Constructor
     public LoginPage(WebDriver driver) {
