@@ -18,11 +18,8 @@ public class AddItemsToCartTest extends BaseTest {
 
     @Test(dataProvider = "loginData")
     public void addItems(String username, String password) {
-        // This should return a ProductsPage object if successful
-        loginPage.loginFunction(username, password);
 
-        // Initialize ProductsPage after login
-        productsPage = new ProductsPage(driver);
+        productsPage = loginPage.loginAs(username, password);
 
         // Check if we successfully navigated to the Products page
         Assert.assertEquals(productsPage.getPageTitle(), "Products", "Login failed or incorrect page title");
@@ -53,7 +50,7 @@ public class AddItemsToCartTest extends BaseTest {
 
     @AfterMethod
     public void tearDown() {
-        String filePath = "C:\\Users\\ms\\Desktop\\Programing\\DEPIR2-POM\\src\\test\\resources\\screenshot2.png";
+        String filePath = "\\src\\test\\resources\\screenshot2.png";
         captureScreenshot(driver, filePath);
         super.tearDown();
     }

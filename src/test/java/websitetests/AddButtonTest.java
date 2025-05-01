@@ -1,5 +1,4 @@
 package websitetests;
-import handlers.ElementWaits ;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -21,8 +20,7 @@ public class AddButtonTest extends BaseTest {
     @Test(dataProvider = "loginData")
     public void addButtonFunction(String username, String password) {
 
-    loginPage.loginFunction(username, password);
-    productsPage = new ProductsPage(driver);
+    productsPage = loginPage.loginAs(username, password);
 
     // Press all buttons
     productsPage.addAllItems();

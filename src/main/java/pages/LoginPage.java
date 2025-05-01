@@ -35,26 +35,15 @@ public class LoginPage {
     public String getLoginErrorMessage() {
         return driver.findElement(loginErrorMessage).getText();
     }
-    public void loginFunction(String username , String password){
+    public ProductsPage loginAs(String username , String password){
         // Login
         ElementWaits waits = new ElementWaits();
         LoginPage loginPage =new LoginPage(driver);
-        if (waits.waitforElementVisiablity(driver,loginPage.usernameField))
-        {
-            loginPage.enterUsername(username);
-        }
+        waits.waitforElementVisiablity(driver,loginPage.usernameField);
+        loginPage.enterUsername(username);
+        loginPage.enterPassword(password);
+        return  clickLoginButton();
 
-
-        if (waits.waitforElementVisiablity(driver,loginPage.passwordField))
-        {
-            loginPage.enterPassword(password);
-        }
-
-
-        if (waits.waitforElementVisiablity(driver,loginPage.loginButton))
-        {
-            ProductsPage productpage = clickLoginButton();
-        }
 
     }
 }

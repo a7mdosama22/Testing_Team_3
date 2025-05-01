@@ -25,8 +25,7 @@ public class SwagLabsTest extends BaseTest {
     @Test(dataProvider = "loginData")
     public void testCompleteCheckoutFlow(String username, String password) {
 
-        loginPage.loginFunction(username, password);
-        productsPage = new ProductsPage(driver);
+        productsPage = loginPage.loginAs(username, password);
 
         Assert.assertEquals(productsPage.getPageTitle(), "Products", "Login failed or incorrect page title");
 
