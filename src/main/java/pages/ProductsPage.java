@@ -52,8 +52,9 @@ public class ProductsPage {
     }
     public int getProductsCount() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".inventory_item_name")));
-        return driver.findElements(By.cssSelector(".inventory_item_name")).size();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".inventory_item")));
+        System.out.println(driver.findElements(By.cssSelector(".inventory_item")).size());
+        return driver.findElements(By.cssSelector(".inventory_item")).size();
     }
 
     public List<String> getAllProductNames() {
