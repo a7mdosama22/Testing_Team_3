@@ -25,17 +25,8 @@ public class SwagLabsTest extends BaseTest {
     @Test(dataProvider = "loginData")
     public void testCompleteCheckoutFlow(String username, String password) {
 
-        if (waits.waitforElementVisiablity(driver, loginPage.usernameField)) {
-            loginPage.enterUsername(username);
-        }
-
-        if (waits.waitforElementVisiablity(driver, loginPage.passwordField)) {
-            loginPage.enterPassword(password);
-        }
-
-        if (waits.waitforElementVisiablity(driver, loginPage.loginButton)) {
-            productsPage = loginPage.clickLoginButton();
-        }
+        loginPage.loginFunction(username, password);
+        productsPage = new ProductsPage(driver);
 
         Assert.assertEquals(productsPage.getPageTitle(), "Products", "Login failed or incorrect page title");
 
@@ -63,7 +54,6 @@ public class SwagLabsTest extends BaseTest {
     }
     @DataProvider(name = "loginData")
     public Object[][] LoginDataProvider (){
-
         return new Object[][] {
                 {"standard_user", "secret_sauce"},
                 {"problem_user", "secret_sauce"},

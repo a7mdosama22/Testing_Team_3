@@ -1,5 +1,6 @@
 package pages;
 
+import handlers.ElementWaits;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -33,5 +34,27 @@ public class LoginPage {
 
     public String getLoginErrorMessage() {
         return driver.findElement(loginErrorMessage).getText();
+    }
+    public void loginFunction(String username , String password){
+        // Login
+        ElementWaits waits = new ElementWaits();
+        LoginPage loginPage =new LoginPage(driver);
+        if (waits.waitforElementVisiablity(driver,loginPage.usernameField))
+        {
+            loginPage.enterUsername(username);
+        }
+
+
+        if (waits.waitforElementVisiablity(driver,loginPage.passwordField))
+        {
+            loginPage.enterPassword(password);
+        }
+
+
+        if (waits.waitforElementVisiablity(driver,loginPage.loginButton))
+        {
+            ProductsPage productpage = clickLoginButton();
+        }
+
     }
 }

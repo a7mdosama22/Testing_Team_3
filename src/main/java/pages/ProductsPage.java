@@ -61,4 +61,15 @@ public class ProductsPage {
         return productNamesElements.stream().map(WebElement::getText).toList();
     }
 
+    public int getCartItemCount() {
+        WebElement cartIconElement = driver.findElement(cartIcon);
+        String cartCountText = cartIconElement.getText();
+
+        // Parse cart count text to integer safely
+        try {
+            return Integer.parseInt(cartCountText);
+        } catch (NumberFormatException e) {
+            return 0; // return 0 indicating no count
+        }
+    }
 }
