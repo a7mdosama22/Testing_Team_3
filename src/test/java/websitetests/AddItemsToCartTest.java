@@ -23,16 +23,15 @@ public class AddItemsToCartTest extends BaseTest {
 
         // Check if we successfully navigated to the Products page
         Assert.assertEquals(productsPage.getPageTitle(), "Products", "Login failed or incorrect page title");
-
+        int productsCount = productsPage.getProductsCount();
         // Add all items to cart
         productsPage.addAllItems();
+        int cartIconNum = productsPage.getCartItemCount();
 
         // Navigate to Cart page
         cartPage = productsPage.goToCart();
-
-        int productsCount = productsPage.getProductsCount();
         int cartItemsCount = cartPage.getCartCount();
-        int cartIconNum = productsPage.getCartItemCount();
+
 
         // Verify count from cart page and icon equal the products count
         Assert.assertEquals(cartItemsCount, productsCount,
