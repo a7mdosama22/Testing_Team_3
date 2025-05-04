@@ -51,7 +51,7 @@ public class AddButtonTest extends BaseTest {
     }
     @AfterMethod
     public void tearDown() {
-        String filePath = "C:\\Users\\ms\\Desktop\\Programing\\DEPIR2-POM\\src\\test\\resources\\screenshot3.png";
+        String filePath = "src/test/resources/screenshot3.png";
         captureScreenshot(driver, filePath);
         super.tearDown();
     }

@@ -49,7 +49,7 @@ public class AddItemsToCartTest extends BaseTest {
 
     @AfterMethod
     public void tearDown() {
-        String filePath = "\\src\\test\\resources\\screenshot2.png";
+        String filePath = "src/test/resources/screenshot2.png";
         captureScreenshot(driver, filePath);
         super.tearDown();
     }

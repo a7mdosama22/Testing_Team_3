@@ -12,11 +12,13 @@ import java.util.List;
 public class ProductsPage {
     WebDriver driver;
 
-    // Corrected locator (from 'title' to 'product_label')
+    // Corrected locators
     public By pageTitle = By.className("product_label");
     public By addToCartButton = By.xpath("//button[text()='ADD TO CART']");
     public By cartIcon = By.className("shopping_cart_link");
     public By allAddToCartButtons = By.cssSelector(".inventory_list .btn_inventory");
+    public By productItem = By.cssSelector(".inventory_item");
+
     // Constructor
     public ProductsPage(WebDriver driver) {
         this.driver = driver;
@@ -52,9 +54,9 @@ public class ProductsPage {
     }
     public int getProductsCount() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".inventory_item")));
-        System.out.println(driver.findElements(By.cssSelector(".inventory_item")).size());
-        return driver.findElements(By.cssSelector(".inventory_item")).size();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(productItem));
+        System.out.println(driver.findElements(productItem).size());
+        return driver.findElements(productItem).size();
     }
 
     public List<String> getAllProductNames() {
