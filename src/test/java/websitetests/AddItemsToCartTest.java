@@ -6,7 +6,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.*;
 import java.util.List;
-@Listeners({io.qameta.allure.testng.AllureTestNg.class})
+@Listeners({io.qameta.allure.testng.AllureTestNg.class, websitetests.TestListener.class})
 public class AddItemsToCartTest extends BaseTest {
     LoginPage loginPage;
     ProductsPage productsPage;

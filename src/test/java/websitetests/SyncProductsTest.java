@@ -12,7 +12,7 @@ import pages.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.Duration;
-@Listeners({io.qameta.allure.testng.AllureTestNg.class})
+@Listeners({io.qameta.allure.testng.AllureTestNg.class, websitetests.TestListener.class})
 public class SyncProductsTest extends BaseTest {
     LoginPage loginPage;
     ProductsPage productsPage;

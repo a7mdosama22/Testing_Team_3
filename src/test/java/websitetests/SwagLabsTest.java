@@ -6,7 +6,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.*;
 import handlers.ElementWaits;
-@Listeners({io.qameta.allure.testng.AllureTestNg.class})
+@Listeners({io.qameta.allure.testng.AllureTestNg.class, websitetests.TestListener.class})
 public class SwagLabsTest extends BaseTest {
 
     LoginPage loginPage;

@@ -7,7 +7,7 @@ import org.testng.annotations.*;
 import pages.*;
 
 import java.util.List;
-@Listeners({io.qameta.allure.testng.AllureTestNg.class})
+@Listeners({io.qameta.allure.testng.AllureTestNg.class, websitetests.TestListener.class})
 public class AddButtonTest extends BaseTest {
     LoginPage loginPage;
     ProductsPage productsPage;

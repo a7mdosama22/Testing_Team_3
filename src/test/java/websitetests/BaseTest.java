@@ -14,6 +14,7 @@ import java.nio.file.StandardCopyOption;
 public class BaseTest {
     WebDriver driver;
 
+    public WebDriver getDriver() { return driver; }
 
     public void setUp(){
         ChromeOptions options = new ChromeOptions();
