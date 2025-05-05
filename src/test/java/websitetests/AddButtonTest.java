@@ -1,4 +1,7 @@
 package websitetests;
+
+import io.qameta.allure.Allure;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -6,10 +9,10 @@ import pages.*;
 
 import java.util.List;
 
+@Listeners({AllureTestNg.class})
 public class AddButtonTest extends BaseTest {
     LoginPage loginPage;
     ProductsPage productsPage;
-
 
     @BeforeMethod
     public void setUp() {
@@ -19,36 +22,33 @@ public class AddButtonTest extends BaseTest {
 
     @Test(dataProvider = "loginData")
     public void addButtonFunction(String username, String password) {
+        Allure.step("Login as user: " + username, () -> {
+            productsPage = loginPage.loginAs(username, password);
+        });
 
-    productsPage = loginPage.loginAs(username, password);
+        Allure.step("Press all 'Add to cart' buttons and verify they change to 'Remove'", () -> {
+            List<WebElement> buttons = driver.findElements(productsPage.addToCartButton);
+            for (WebElement button : buttons) {
+                String buttonTextBefore = button.getText();
+                button.click();
+                String buttonTextAfter = button.getText();
 
-    // Press all buttons
-    productsPage.addAllItems();
+                Allure.step("Verify button text changed after clicking", () -> {
+                    Assert.assertNotEquals(buttonTextBefore.toLowerCase(), buttonTextAfter.toLowerCase(), "Button text did not change after click");
+                    Assert.assertEquals(buttonTextAfter.toLowerCase(), "Remove".toLowerCase(), "Button text did not change to 'Remove'");
+                });
+            }
+        });
 
-    //  Check all buttons are pressed ...
-    List<WebElement> buttons = driver.findElements(productsPage.addToCartButton);
-    for (WebElement button : buttons){
-        // Store the button text before clicking
-        String buttonTextBefore = button.getText();
-        // Click the Add to Cart button
-        button.click();
+        Allure.step("Verify that the cart icon count matches the number of products", () -> {
+            int cartIconNum = productsPage.getCartItemCount();
+            int productsCount = productsPage.getProductsCount();
 
-        // Verify the button text has changed
-        String buttonTextAfter = button.getText();
-        Assert.assertNotEquals(buttonTextBefore, buttonTextAfter, "Button text did not change after click");
-
-        // Expectation: "Add to cart" changes to "Remove" or similar
-        Assert.assertEquals(buttonTextAfter, "Remove", "Button text did not change to 'Remove'");
-
-        }
-    // check productsCount and cart icon num
-    int cartIconNum =productsPage.getCartItemCount() ;
-    int productsCount = productsPage.getProductsCount();
-
-        Assert.assertEquals(cartIconNum, productsCount,
-                "cartIconNum doesn't match number of products added");
-
+            Assert.assertEquals(cartIconNum, productsCount,
+                    "Cart icon number doesn't match number of products added");
+        });
     }
+
     @AfterMethod
     public void tearDown() {
         String filePath = "src/test/resources/screenshot3.png";
@@ -58,7 +58,6 @@ public class AddButtonTest extends BaseTest {
 
     @DataProvider(name = "loginData")
     public Object[][] LoginDataProvider() {
-
         return new Object[][]{
                 {"standard_user", "secret_sauce"},
                 {"problem_user", "secret_sauce"},

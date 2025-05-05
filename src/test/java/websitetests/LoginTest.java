@@ -1,16 +1,18 @@
 package websitetests;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.LoginPage;
 import pages.ProductsPage;
 
-import java.time.Duration;
 
+
+@Listeners({AllureTestNg.class})
 public class LoginTest extends BaseTest {
 
     LoginPage loginPage;
@@ -24,29 +26,36 @@ public class LoginTest extends BaseTest {
 
     @Test(dataProvider = "loginData")
     public void loginValidationTest(String username, String password, boolean isValid) {
-        productsPage = loginPage.loginAs(username, password);
-
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-            WebElement closePopup = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Close']")));
-            closePopup.click();
-            System.out.println("Popup closed.");
-        } catch (Exception e) {
-            System.out.println("Popup not present or already closed.");
-        }
+        productsPage = Allure.step(
+                "Login with username: " + username + " and password: " + password,
+                () -> loginPage.loginAs(username, password)
+        );
 
         if (isValid) {
-            String actualTitle = productsPage.getPageTitle();
-            Assert.assertEquals(actualTitle, "Products", "Login failed or incorrect landing page title.");
+            Allure.step("Check that Products page is opened after login", this::validateSuccessfulLogin);
         } else {
-            WebElement errorMessage = driver.findElement(By.cssSelector("h3[data-test='error']"));
-            Assert.assertTrue(errorMessage.isDisplayed(), "Expected error message not displayed for invalid credentials.");
+            Allure.step("Check error message for invalid login", this::validateUnsuccessfulLogin);
         }
     }
 
+    public void validateSuccessfulLogin() {
+        String actualTitle = productsPage.getPageTitle();
+        Assert.assertEquals(actualTitle, "Products", "Login failed or incorrect landing page title.");
+    }
+
+    public void validateUnsuccessfulLogin() {
+        WebElement errorMessage = driver.findElement(By.cssSelector("h3[data-test='error']"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "Expected error message not displayed for invalid credentials.");
+    }
+
     @AfterMethod
-    public void tearDown() {
-        String filePath = "src/test/resources/login_screenshot.png";
+    public void tearDown(ITestResult result) {
+        Object[] params = result.getParameters();
+        String userPart = "";
+        if (params != null && params.length > 0) {
+            userPart = "_" + params[0];
+        }
+        String filePath = "src/test/resources/screenshotLoginTest" + userPart + ".png";
         captureScreenshot(driver, filePath);
         super.tearDown();
     }

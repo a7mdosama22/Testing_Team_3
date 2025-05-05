@@ -1,5 +1,6 @@
 package websitetests;
 
+import io.qameta.allure.Allure;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -35,39 +36,46 @@ public class SyncProductsTest extends BaseTest {
 
     @Test(dataProvider = "loginData")
     public void addItems(String username, String password) {
-        productsPage = loginPage.loginAs(username, password);
+        Allure.step("Login as user: " + username, () -> {
+            productsPage = loginPage.loginAs(username, password);
+        });
 
+        Allure.step("Add all products to cart", () -> {
+            productsPage.addAllItems();
+        });
 
-        productsPage.addAllItems();
-
-        // Collect product data from the product page
-        List<WebElement> items = driver.findElements(By.cssSelector(".inventory_item"));
-        List<ProductData> allProducts = new ArrayList<>();
-        for (WebElement item : items) {
-            String name = item.findElement(By.cssSelector(".inventory_item_name")).getText();
-            String price = item.findElement(By.cssSelector(".inventory_item_price")).getText();
-            String button = item.findElement(By.cssSelector(".btn_inventory")).getText();
-            String href = item.findElement(By.cssSelector("a[href^='./inventory-item.html']")).getAttribute("href");
-            allProducts.add(new ProductData(name, price, button, href));
-        }
-
+        List<ProductData> allProducts = Allure.step("Collect all product data from Products page", () -> {
+            List<WebElement> items = driver.findElements(By.cssSelector(".inventory_item"));
+            List<ProductData> allProds = new ArrayList<>();
+            for (WebElement item : items) {
+                String name = item.findElement(By.cssSelector(".inventory_item_name")).getText();
+                String price = item.findElement(By.cssSelector(".inventory_item_price")).getText();
+                String button = item.findElement(By.cssSelector(".btn_inventory")).getText();
+                String href = item.findElement(By.cssSelector("a[href^='./inventory-item.html']")).getAttribute("href");
+                allProds.add(new ProductData(name, price, button, href));
+            }
+            return allProds;
+        });
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        for (ProductData product : allProducts) {
-            driver.get(product.href);
+        Allure.step("Check product details for each product", () -> {
+            for (ProductData product : allProducts) {
+                Allure.step("Check details for product: " + product.name, () -> {
+                    driver.get(product.href);
 
-            WebElement productTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("inventory_details_name")));
-            WebElement productPrice = driver.findElement(By.className("inventory_details_price"));
-            WebElement detailButton = driver.findElement(By.cssSelector(".btn_inventory"));
+                    WebElement productTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("inventory_details_name")));
+                    WebElement productPrice = driver.findElement(By.className("inventory_details_price"));
+                    WebElement detailButton = driver.findElement(By.cssSelector(".btn_inventory"));
 
-            Assert.assertEquals(productTitle.getText(), product.name, "The product name is not the same");
-            Assert.assertEquals(productPrice.getText(), product.price, "The price of the product is not the same");
-            Assert.assertEquals(detailButton.getText().trim().toLowerCase(), product.buttonText.trim().toLowerCase(), "The listproduct button is different from the details button.");
+                    Assert.assertEquals(productTitle.getText(), product.name, "The product name is not the same");
+                    Assert.assertEquals(productPrice.getText(), product.price, "The price of the product is not the same");
+                    Assert.assertEquals(detailButton.getText().trim().toLowerCase(), product.buttonText.trim().toLowerCase(), "The listproduct button is different from the details button.");
 
-            // Return to the product list page
-            driver.navigate().back();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".inventory_item")));
-        }
+                    driver.navigate().back();
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".inventory_item")));
+                });
+            }
+        });
     }
 
     @AfterMethod
