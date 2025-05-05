@@ -34,8 +34,11 @@ public class AddButtonTest extends BaseTest {
                 String buttonTextAfter = button.getText();
 
                 Allure.step("Verify button text changed after clicking", () -> {
-                    Assert.assertNotEquals(buttonTextBefore.toLowerCase(), buttonTextAfter.toLowerCase(), "Button text did not change after click");
-                    Assert.assertEquals(buttonTextAfter.toLowerCase(), "Remove".toLowerCase(), "Button text did not change to 'Remove'");
+                    Assert.assertNotEquals(buttonTextBefore, buttonTextAfter, "Button text did not change after click");
+                    Assert.assertTrue(
+                            buttonTextAfter.equalsIgnoreCase("Remove"),
+                            "Button text did not change to 'Remove' (case-insensitive check)"
+                    );
                 });
             }
         });
