@@ -3,6 +3,7 @@ package websitetests;
 import io.qameta.allure.Allure;
 import io.qameta.allure.testng.AllureTestNg;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.*;
 
@@ -57,10 +58,12 @@ public class AddItemsToCartTest extends BaseTest {
         });
     }
 
+
     @AfterMethod
-    public void tearDown() {
-        String filePath = "src/test/resources/screenshot2.png";
-        captureScreenshot(driver, filePath);
+    public void tearDown(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
+            AllureAttachments.screenshot(driver);
+        }
         super.tearDown();
     }
 

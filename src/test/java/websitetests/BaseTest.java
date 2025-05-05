@@ -26,16 +26,6 @@ public class BaseTest {
         driver.manage().window().maximize();
         driver.get("https://www.saucedemo.com/v1/index.html");
     }
-    //Screenshot method
-    public static void captureScreenshot(WebDriver driver, String filePath) {
-        TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
-        File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
-        try {
-            Files.copy(screenshot.toPath(), new File(filePath).toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save screenshot to " + filePath, e);
-        }
-    }
 
 
     public void tearDown(){

@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.*;
 import java.util.List;
@@ -79,9 +80,10 @@ public class SyncProductsTest extends BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
-        String filePath = "src/test/resources/screenshot5.png";
-        captureScreenshot(driver, filePath);
+    public void tearDown(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
+            AllureAttachments.screenshot(driver);
+        }
         super.tearDown();
     }
 

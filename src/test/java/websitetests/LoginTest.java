@@ -50,13 +50,9 @@ public class LoginTest extends BaseTest {
 
     @AfterMethod
     public void tearDown(ITestResult result) {
-        Object[] params = result.getParameters();
-        String userPart = "";
-        if (params != null && params.length > 0) {
-            userPart = "_" + params[0];
+        if (ITestResult.FAILURE == result.getStatus()) {
+            AllureAttachments.screenshot(driver);
         }
-        String filePath = "src/test/resources/screenshotLoginTest" + userPart + ".png";
-        captureScreenshot(driver, filePath);
         super.tearDown();
     }
 

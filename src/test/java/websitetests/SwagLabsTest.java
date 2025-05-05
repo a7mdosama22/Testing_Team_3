@@ -2,6 +2,7 @@ package websitetests;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.testng.AllureTestNg;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import handlers.ElementWaits;
 import org.testng.Assert;
@@ -59,9 +60,10 @@ public class SwagLabsTest extends BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
-        String filePath = "src/test/resources/screenshot.png";
-        captureScreenshot(driver, filePath);
+    public void tearDown(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
+            AllureAttachments.screenshot(driver);
+        }
         super.tearDown();
     }
 

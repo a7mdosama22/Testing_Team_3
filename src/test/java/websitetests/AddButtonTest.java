@@ -1,12 +1,15 @@
 package websitetests;
-
+import org.testng.ITestResult;
 import io.qameta.allure.Allure;
 import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.*;
-
+import io.qameta.allure.Attachment;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import java.util.List;
 
 @Listeners({AllureTestNg.class})
@@ -53,9 +56,10 @@ public class AddButtonTest extends BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
-        String filePath = "src/test/resources/screenshot3.png";
-        captureScreenshot(driver, filePath);
+    public void tearDown(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
+            AllureAttachments.screenshot(driver);
+        }
         super.tearDown();
     }
 
@@ -67,4 +71,5 @@ public class AddButtonTest extends BaseTest {
                 {"performance_glitch_user", "secret_sauce"}
         };
     }
+
 }
