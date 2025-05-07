@@ -61,9 +61,7 @@ public class SwagLabsTest extends BaseTest {
 
     @AfterMethod
     public void tearDown(ITestResult result) {
-        if (ITestResult.FAILURE == result.getStatus()) {
-            AllureAttachments.screenshot(driver);
-        }
+        AllureAttachments.screenshot(driver);
         super.tearDown();
     }
 
