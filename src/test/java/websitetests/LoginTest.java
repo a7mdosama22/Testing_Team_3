@@ -49,7 +49,7 @@ public class LoginTest extends BaseTest {
     }
 
     @AfterMethod
-    public void tearDown(ITestResult result) {
+    public void tearDown() {
         AllureAttachments.screenshot(driver);
         super.tearDown();
     }
