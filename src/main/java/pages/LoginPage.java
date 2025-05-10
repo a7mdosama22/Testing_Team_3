@@ -32,9 +32,7 @@ public class LoginPage {
         return new ProductsPage(driver);
     }
 
-    public String getLoginErrorMessage() {
-        return driver.findElement(loginErrorMessage).getText();
-    }
+
     public ProductsPage loginAs(String username , String password){
         // Login
         ElementWaits waits = new ElementWaits();

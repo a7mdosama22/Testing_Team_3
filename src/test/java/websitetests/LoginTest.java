@@ -5,7 +5,6 @@ import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.LoginPage;
 import pages.ProductsPage;

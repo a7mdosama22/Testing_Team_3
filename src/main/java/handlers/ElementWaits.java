@@ -20,8 +20,5 @@ public class ElementWaits {
             e.printStackTrace();
             return false;
         }
-
-
-
     }
 }
